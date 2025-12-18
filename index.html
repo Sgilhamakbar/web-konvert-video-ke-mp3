@@ -404,13 +404,20 @@
         if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js')); }
         document.getElementById('year').innerText = new Date().getFullYear();
 
-        // Counter Palsu
+       // --- LOGIKA LIVE COUNTER (REALISTIS) ---
         function updateVisitorCount() {
-            const baseCount = 1200; 
-            const randomFlux = Math.floor(Math.random() * 50);
-            document.getElementById('visitorCount').innerText = (baseCount + randomFlux).toLocaleString();
+            // Menghasilkan angka acak antara 10 sampai 20
+            const min = 3;
+            const max = 20;
+            const total = Math.floor(Math.random() * (max - min + 1)) + min;
+            
+            document.getElementById('visitorCount').innerText = total;
         }
-        updateVisitorCount(); setInterval(updateVisitorCount, 5000);
+        
+        // Jalankan saat load
+        updateVisitorCount();
+        // Update setiap 5 detik agar terlihat berubah-ubah
+        setInterval(updateVisitorCount, 5000);
 
         // --- 3. CONVERTER ---
         const { createFFmpeg, fetchFile } = FFmpeg;
