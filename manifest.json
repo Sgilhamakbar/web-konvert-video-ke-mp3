@@ -1,0 +1,21 @@
+{
+  "name": "Converter Video to MP3",
+  "short_name": "MP3 Pro",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#1a1a1a",
+  "description": "Ubah Video ke MP3 dengan cepat dan aman.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
