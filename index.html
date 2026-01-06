@@ -316,6 +316,18 @@
             .seo-card { padding: 25px; }
             .seo-card h2 { font-size: 20px; }
         }
+
+        /* --- BLOG GRID STYLE (Baru) --- */
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; width: 100%; margin-bottom: 40px; }
+        .blog-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; overflow: hidden; transition: 0.3s; text-decoration: none; display: flex; flex-direction: column; }
+        .blog-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--accent-glow); }
+        .blog-thumb { height: 140px; background: linear-gradient(135deg, #0071e3, #00c6ff); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .blog-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .blog-tag { font-size: 11px; font-weight: 700; color: #0071e3; text-transform: uppercase; margin-bottom: 8px; }
+        .blog-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-main); margin: 0 0 10px 0; }
+        .blog-desc { font-size: 13px; color: var(--text-sub); margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .read-more { margin-top: auto; font-size: 13px; font-weight: 600; color: #0071e3; }
+
     </style>
     
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
@@ -407,6 +419,21 @@
             </div>
         </section>
 
+        <section style="width: 100%;">
+            <div class="section-header"><span class="section-title">Tips & Artikel</span></div>
+            <div class="blog-grid">
+                <a href="tips.html" class="blog-card">
+                    <div class="blog-thumb">📱</div>
+                    <div class="blog-content">
+                        <span class="blog-tag">Tips Produktivitas</span>
+                        <h3 class="blog-title">Cara Menghemat Memori HP dengan Mengubah Video Kuliah Jadi Audio</h3>
+                        <div class="blog-desc">Memori HP penuh? Pelajari cara mengekstrak suaranya saja agar hemat ruang hingga 90%.</div>
+                        <div class="read-more">Baca Selengkapnya →</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
     </div>
     
     <section class="seo-container">
@@ -461,9 +488,9 @@
             <div class="f-col">
                 <h4>Pusat Bantuan</h4>
                 <div class="f-links">
-                    <a href="faq.html" class="f-link">FAQ (Tanya Jawab)</a>
+                    <a href="faq.html#faq" class="f-link">FAQ (Tanya Jawab)</a>
                     <a href="mailto:wilhamakbar023@gmail.com?subject=Laporan Bug" class="f-link">Laporkan Bug</a>
-                    <a href="faq.html" class="f-link">Panduan Penggunaan</a>
+                    <a href="faq.html#guide" class="f-link">Panduan Penggunaan</a>
                     <a href="mailto:wilhamakbar023@gmail.com?subject=Halo Dev" class="f-link">Kontak Developer</a>
                 </div>
             </div>
