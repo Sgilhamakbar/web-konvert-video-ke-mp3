@@ -22,11 +22,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com"> 
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
     
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js" defer></script>
-    
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4763828168266675"
+     crossorigin="anonymous"></script>
+
     <style>
-        /* --- CONFIG VARIABLES --- */
+        /* --- CONFIG VARIABLES (DESAIN ORIGINAL) --- */
         :root {
             /* LIGHT MODE */
             --bg-anim: linear-gradient(-45deg, #e0eafc, #cfdef3, #e2ebf0, #e6e9f0);
@@ -44,6 +48,9 @@
             --footer-bg: rgba(255, 255, 255, 0.4);
             --history-bg: rgba(255, 255, 255, 0.6);
             --accent-glow: rgba(0, 113, 227, 0.5);
+            
+            /* Title Effect */
+            --title-shadow: 0 0 0 transparent;
         }
 
         body.dark-mode {
@@ -63,6 +70,9 @@
             --footer-bg: rgba(0, 0, 0, 0.3);
             --history-bg: rgba(255, 255, 255, 0.05);
             --accent-glow: rgba(255, 255, 255, 0.3);
+
+            /* Title Glow in Dark */
+            --title-shadow: 0 0 20px rgba(0, 113, 227, 0.6), 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         /* RESET & BASE */
@@ -102,6 +112,7 @@
             flex: 1; display: flex; flex-direction: column; align-items: center;
             padding: 80px 20px 40px 20px; 
             gap: 50px; max-width: 1000px; margin: 0 auto; width: 100%;
+            position: relative; z-index: 2; /* Agar di atas robot */
         }
 
         /* --- HOVER ANIMATION CLASS --- */
@@ -124,11 +135,16 @@
         }
         
         h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 800; font-size: 28px; margin: 0; letter-spacing: -0.5px;
             background: linear-gradient(135deg, var(--text-main) 30%, var(--text-sub));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             color: var(--text-main);
+            /* Efek Mata Adaptif */
+            text-shadow: var(--title-shadow);
+            transition: text-shadow 2s ease;
         }
+        
         .subtitle { color: var(--text-sub); font-size: 15px; margin-top: 8px; margin-bottom: 20px; line-height: 1.5; }
         
         .file-info-group { margin-bottom: 20px; }
@@ -152,8 +168,9 @@
         .input-glass { 
             background: var(--input-bg); 
             border: 1px solid var(--glass-border); 
-            border-radius: 16px; padding: 15px; margin-bottom: 20px;
+            border-radius: 16px; padding: 15px; margin-bottom: 15px;
             animation: glowPulse 3s infinite alternate;
+            display: flex; align-items: center; justify-content: space-between;
         }
         @keyframes glowPulse {
             0% { border-color: var(--glass-border); }
@@ -166,6 +183,16 @@
             border: none; background: rgba(128, 128, 128, 0.15); color: var(--text-main);
             font-weight: 600; padding: 8px 16px; border-radius: 8px; margin-right: 15px; cursor: pointer;
         }
+
+        /* Dropdown Bitrate */
+        .quality-select {
+            background: transparent; border: none; color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700; font-size: 13px; cursor: pointer; outline: none; text-align: right;
+            padding: 5px;
+        }
+        .quality-select option { background: #fff; color: #000; }
+        body.dark-mode .quality-select option { background: #1a1a1a; color: #fff; }
 
         .btn-glass {
             background: var(--btn-bg); color: var(--btn-text); border: 1px solid rgba(255,255,255,0.1);
@@ -245,6 +272,7 @@
             border-top: 1px solid var(--glass-border); width: 100%; 
             background: var(--footer-bg); font-family: 'Plus Jakarta Sans', sans-serif;
             box-sizing: border-box; backdrop-filter: blur(10px); transition: 0.5s;
+            position: relative; z-index: 2;
         }
 
         .footer-grid {
@@ -299,6 +327,7 @@
         .seo-container {
             width: 100%; max-width: 800px; margin: 0 auto;
             padding: 20px; text-align: left;
+            position: relative; z-index: 2;
         }
         .seo-card {
             background: var(--glass-bg); 
@@ -319,7 +348,7 @@
             .seo-card h2 { font-size: 20px; }
         }
 
-        /* --- BLOG GRID STYLE (Baru) --- */
+        /* --- BLOG GRID STYLE --- */
         .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; width: 100%; margin-bottom: 40px; }
         .blog-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; overflow: hidden; transition: 0.3s; text-decoration: none; display: flex; flex-direction: column; }
         .blog-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--accent-glow); }
@@ -330,18 +359,99 @@
         .blog-desc { font-size: 13px; color: var(--text-sub); margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         .read-more { margin-top: auto; font-size: 13px; font-weight: 600; color: #0071e3; }
 
+        /* --- CANVAS CURSOR --- */
+        #cursor-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; pointer-events: none; /* PENTING */
+        }
+        
+        /* --- ROBOT CSS --- */
+        #robot-wrapper {
+            position: fixed; bottom: 10px; left: 10px; z-index: 99;
+            width: 140px; height: 160px;
+            pointer-events: none; 
+        }
+        /* Bubble Chat */
+        .speech-bubble {
+            position: absolute; top: -40px; left: 10px;
+            background: #e74c3c; color: white;
+            padding: 8px 15px; border-radius: 20px 20px 20px 0;
+            font-size: 12px; font-weight: 800;
+            opacity: 0; transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            white-space: nowrap;
+        }
+        .speech-bubble.show { opacity: 1; transform: scale(1); }
+
+        /* Robot Style */
+        #robot-walle {
+            width: 100%; height: 100%;
+            animation: breathe 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
+            transform-origin: bottom center;
+        }
+        @keyframes breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        
+        /* Angry Animation */
+        .robot-angry { animation: shake 0.5s ease-in-out !important; }
+        .robot-angry .walle-eye-bg { fill: #c0392b !important; transition: fill 0.2s; }
+        .robot-angry .walle-hands { 
+            transform: translateY(-15px) rotate(-20deg); 
+            transform-origin: center; transition: transform 0.2s; 
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-5deg); }
+            75% { transform: translateX(5px) rotate(5deg); }
+        }
     </style>
-    
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4763828168266675"
-     crossorigin="anonymous"></script>
-
 </head>
 <body class="dark-mode">
+    
+    <canvas id="cursor-canvas"></canvas>
 
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Ganti Tema">☀</button>
     <div id="toast" role="alert">Notifikasi</div>
+
+    <div id="robot-wrapper">
+        <div id="speech-bubble" class="speech-bubble">Itu bukan file video! 😡</div>
+        
+        <svg id="robot-walle" viewBox="-10 0 140 130" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,100 L30,100 L35,125 L5,125 Z" fill="#333" />
+            <path d="M90,100 L110,100 L115,125 L85,125 Z" fill="#333" />
+
+            <g class="walle-hands" fill="#555" stroke="#444" stroke-width="1">
+                <path d="M 5 90 Q -5 95 -5 80 L 0 75 L 5 80 Q 5 90 5 90" fill="#7f8c8d" />
+                <path d="M -5 80 L -8 70 L 2 70 L -1 80 Z" fill="#555" /> 
+                <path d="M 115 90 Q 125 95 125 80 L 120 75 L 115 80 Q 115 90 115 90" fill="#7f8c8d" />
+                <path d="M 125 80 L 128 70 L 118 70 L 121 80 Z" fill="#555" /> 
+            </g>
+            
+            <rect x="25" y="75" width="70" height="45" rx="5" fill="#e6a756" stroke="#c08535" stroke-width="2"/>
+            <rect x="35" y="85" width="50" height="25" rx="2" fill="#dcdde1" opacity="0.5"/>
+            <rect x="40" y="90" width="10" height="4" rx="1" fill="#e74c3c"/>
+            <rect x="40" y="96" width="15" height="4" rx="1" fill="#f1c40f"/>
+            <rect x="40" y="102" width="20" height="4" rx="1" fill="#2ecc71"/>
+            <rect x="55" y="60" width="10" height="15" fill="#7f8c8d"/>
+
+            <g id="walle-head">
+                <path class="walle-eye-bg" d="M35,65 Q25,65 25,45 Q30,25 45,30 Q60,35 60,45 Q60,65 50,65 Z" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2" transform="rotate(-10 45 45)"/>
+                <path class="walle-eye-bg" d="M85,65 Q95,65 95,45 Q90,25 75,30 Q60,35 60,45 Q60,65 70,65 Z" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2" transform="rotate(10 75 45)"/>
+
+                <g class="walle-pupil" transform="translate(42, 45)">
+                    <circle cx="0" cy="0" r="9" fill="#111"/>
+                    <circle cx="0" cy="0" r="4" fill="#333"/>
+                    <circle cx="3" cy="-3" r="2" fill="#fff" opacity="0.8"/>
+                </g>
+                <g class="walle-pupil" transform="translate(78, 45)">
+                    <circle cx="0" cy="0" r="9" fill="#111"/>
+                    <circle cx="0" cy="0" r="4" fill="#333"/>
+                    <circle cx="3" cy="-3" r="2" fill="#fff" opacity="0.8"/>
+                </g>
+            </g>
+        </svg>
+    </div>
 
     <div class="page-wrapper">
         
@@ -351,17 +461,22 @@
             <p class="subtitle">Ubah video ke audio tanpa upload. Aman & Privat.</p>
 
             <div class="file-info-group">
-                <div class="file-info">
-                    ℹ️ Maksimal Ukuran File: <strong>2 GB</strong>
-                </div>
-                <div class="format-support">
-                    ✅ Mendukung: MP4, MKV, AVI, MOV, FLV, WEBM
-                </div>
+                <div class="file-info">ℹ️ Maksimal Ukuran File: <strong>2 GB</strong></div>
+                <div class="format-support">✅ Mendukung: MP4, MKV, AVI, MOV, FLV, WEBM</div>
             </div>
 
             <div class="input-glass hover-anim">
                 <label for="uploader" class="sr-only">Pilih File Video</label>
-                <input type="file" id="uploader" accept="video/*" aria-label="Upload Video" onchange="handleFileSelect()">
+                <input type="file" id="uploader" accept="video/*" aria-label="Upload Video" onchange="checkFile(this)">
+            </div>
+
+            <div class="input-glass hover-anim" style="padding: 10px 15px;">
+                <label for="bitrate" style="font-size:13px; color:var(--text-sub); font-weight:700;">🎵 Kualitas Audio:</label>
+                <select id="bitrate" class="quality-select">
+                    <option value="128k">Standar (128 kbps)</option>
+                    <option value="192k" selected>Tinggi (192 kbps)</option>
+                    <option value="320k">Terbaik (320 kbps)</option>
+                </select>
             </div>
 
             <div id="selectedFileDisplay" class="selected-file-display"></div>
@@ -375,8 +490,7 @@
 
         <div id="historySection" class="history-container hover-anim">
             <div class="section-title" style="margin-bottom: 20px; border: none; font-size: 14px;">RIWAYAT KONVERSI</div>
-            <div id="historyList">
-                </div>
+            <div id="historyList"></div>
             <div style="text-align: center; margin-top: 15px;">
                 <button onclick="clearAllHistory()" style="background: none; border: none; color: var(--text-sub); font-size: 11px; cursor: pointer;">Hapus Semua Riwayat</button>
             </div>
@@ -391,7 +505,7 @@
                 </div>
                 <div class="step-item hover-anim">
                     <span class="step-badge">LANGKAH 02</span>
-                    <span class="step-text">Klik tombol konversi dan tunggu proses ekstraksi audio.</span>
+                    <span class="step-text">Pilih kualitas audio, klik tombol konversi dan tunggu proses ekstraksi.</span>
                 </div>
                 <div class="step-item hover-anim">
                     <span class="step-badge">LANGKAH 03</span>
@@ -476,7 +590,7 @@
                 <h4>Converter Pro</h4>
                 <div class="status-badge"><span class="dot"></span> All Systems Operational</div>
                 
-                <div class="live-stat"><span aria-hidden="true">⚡</span> <span class="live-num">v2.4.2</span> (Stable Build)</div>
+                <div class="live-stat"><span aria-hidden="true">⚡</span> <span class="live-num">v3.2</span> (Stable Build)</div>
             </div>
             <div class="f-col">
                 <h4>Legal & Info</h4>
@@ -504,7 +618,7 @@
     </footer>
 
     <script>
-        // THEME LOGIC
+        // 1. THEME LOGIC
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
         if (localStorage.getItem('theme') === 'light') { disableDarkMode(); }
@@ -513,28 +627,67 @@
         function disableDarkMode() { body.classList.remove('dark-mode'); themeBtn.innerText = "🌙"; localStorage.setItem('theme', 'light'); }
         function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.className = "show"; setTimeout(() => t.className = t.className.replace("show", ""), 3000); }
 
-        // OTHER LOGIC
+        // 2. FILE VALIDATION & ROBOT REACTION (AI Logic)
+        function checkFile(input) {
+            const file = input.files[0];
+            const robotSvg = document.getElementById('robot-walle');
+            const bubble = document.getElementById('speech-bubble');
+            const btn = document.getElementById('convertBtn');
+            const display = document.getElementById('selectedFileDisplay');
+
+            if (file) {
+                // Cek apakah tipe file BUKAN video
+                if (!file.type.startsWith('video/')) {
+                    // Robot Marah
+                    input.value = ""; 
+                    robotSvg.classList.add('robot-angry');
+                    bubble.classList.add('show');
+                    btn.disabled = true;
+                    display.style.display = 'none';
+
+                    setTimeout(() => {
+                        robotSvg.classList.remove('robot-angry');
+                        bubble.classList.remove('show');
+                        btn.disabled = false;
+                    }, 3000);
+                } else {
+                    // File Benar
+                    btn.disabled = false;
+                    const sizeMB = (file.size / (1024 * 1024)).toFixed(2) + " MB";
+                    display.innerText = `📂 ${file.name} (${sizeMB})`;
+                    display.style.display = 'block';
+                }
+            }
+        }
+
+        // 3. WALL-E EYE TRACKING (FIXED DIRECTION)
+        const pupils = document.querySelectorAll('.walle-pupil');
+        const robot = document.getElementById('robot-walle');
+        
+        function moveEyes(x, y) {
+            const rect = robot.getBoundingClientRect();
+            const anchorX = rect.left + 70; 
+            const anchorY = rect.top + 50;
+            const dx = (x - anchorX) / 20; 
+            const dy = (y - anchorY) / 20;
+            const moveX = Math.max(-4, Math.min(4, dx));
+            const moveY = Math.max(-3, Math.min(3, dy));
+            
+            // Set Transform Attribute Directly for SVG
+            pupils[0].setAttribute('transform', `translate(${42 + moveX}, ${45 + moveY})`);
+            pupils[1].setAttribute('transform', `translate(${78 + moveX}, ${45 + moveY})`);
+        }
+        window.addEventListener('mousemove', (e) => moveEyes(e.clientX, e.clientY));
+        window.addEventListener('touchmove', (e) => moveEyes(e.touches[0].clientX, e.touches[0].clientY));
+
+        // 4. CONVERTER LOGIC (FFMPEG)
         if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js')); }
         document.getElementById('year').innerText = new Date().getFullYear();
         
-        // SCRIPT PENGUNJUNG PALSU TELAH DIHAPUS DEMI KEAMANAN AKUN ADSENSE
-        
-        // --- CONVERTER LOGIC YANG SUDAH DIPERBAIKI (SUPPORT DEFER) ---
-        
-        // HAPUS baris: const { createFFmpeg, fetchFile } = FFmpeg; 
-        // Kita akan panggil FFmpeg secara langsung di dalam fungsi
-        
         let ffmpeg = null;
-        let finalMp3Blob = null; 
-
         const initFFmpeg = () => {
             if (ffmpeg === null) {
-                // Panggil FFmpeg.createFFmpeg di sini, saat tombol sudah ditekan
-                ffmpeg = FFmpeg.createFFmpeg({ 
-                    log: true, 
-                    corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js', 
-                    mainName: 'main' 
-                });
+                ffmpeg = FFmpeg.createFFmpeg({ log: true, corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js', mainName: 'main' });
             }
         }
 
@@ -542,59 +695,36 @@
         const outputArea = document.getElementById('output-area');
         const convertBtn = document.getElementById('convertBtn');
         const loader = document.getElementById('loader');
-        
-        function handleFileSelect() {
-            // ... (Kode handleFileSelect TETAP SAMA, tidak perlu diubah) ...
-            const file = document.getElementById('uploader').files[0];
-            const display = document.getElementById('selectedFileDisplay');
-            if (file) {
-                const maxSize = 2 * 1024 * 1024 * 1024; 
-                if (file.size > maxSize) {
-                    alert("⚠️ File terlalu besar! Maksimal 2GB.");
-                    document.getElementById('uploader').value = "";
-                    display.style.display = 'none';
-                    return;
-                }
-                const sizeMB = (file.size / (1024 * 1024)).toFixed(2) + " MB";
-                display.innerText = `📂 ${file.name} (${sizeMB})`;
-                display.style.display = 'block';
-            } else {
-                display.style.display = 'none';
-            }
-        }
 
         const convert = async () => {
             const uploader = document.getElementById('uploader');
             const files = uploader.files;
+            const bitrateSelect = document.getElementById('bitrate');
             
-            if (files.length === 0) { showToast("⚠️ Pilih file dulu"); return; }
-            if (!files[0].type.startsWith('video/')) { showToast("⛔ Bukan video!"); return; }
+            if (files.length === 0) { 
+                checkFile({files: [{type: 'invalid'}]}); // Trigger angry if no file
+                return; 
+            }
             
+            const selectedBitrate = bitrateSelect.value;
             statusText.innerText = "Menyiapkan mesin..."; 
             outputArea.innerHTML = "";
             convertBtn.disabled = true; convertBtn.style.opacity = "0.5"; loader.style.display = "block";
 
             try {
-                // Pastikan FFmpeg sudah ada sebelum init
-                if (typeof FFmpeg === 'undefined') {
-                    throw new Error("Library FFmpeg belum siap. Coba tunggu sebentar atau refresh.");
-                }
-
+                if (typeof FFmpeg === 'undefined') throw new Error("Library FFmpeg belum siap.");
                 initFFmpeg();
                 if (!ffmpeg.isLoaded()) await ffmpeg.load();
 
-                statusText.innerText = "Memproses video... (Jangan tutup tab)";
+                statusText.innerText = `Memproses (${selectedBitrate})... (Jangan tutup tab)`;
                 const fileName = files[0].name;
 
-                // PERUBAHAN DISINI: Gunakan FFmpeg.fetchFile (bukan fetchFile biasa)
                 ffmpeg.FS('writeFile', 'input', await FFmpeg.fetchFile(files[0]));
-                
-                await ffmpeg.run('-i', 'input', 'output.mp3');
-                
+                await ffmpeg.run('-i', 'input', '-b:a', selectedBitrate, 'output.mp3');
                 const data = ffmpeg.FS('readFile', 'output.mp3');
-                try { ffmpeg.FS('unlink', 'input'); ffmpeg.FS('unlink', 'output.mp3'); } catch(e) { console.log(e); }
+                try { ffmpeg.FS('unlink', 'input'); ffmpeg.FS('unlink', 'output.mp3'); } catch(e) {}
 
-                finalMp3Blob = new Blob([data.buffer], { type: 'audio/mp3' });
+                const finalMp3Blob = new Blob([data.buffer], { type: 'audio/mp3' });
                 const url = URL.createObjectURL(finalMp3Blob);
                 const mp3SizeMB = (finalMp3Blob.size / (1024 * 1024)).toFixed(2) + " MB";
                 
@@ -602,30 +732,24 @@
 
                 outputArea.innerHTML = `
                     <div class="success-holo">
-                        <div style="font-weight:600; margin-bottom:5px">Selesai</div>
+                        <div style="font-weight:600; margin-bottom:5px">Selesai! (${selectedBitrate})</div>
+                        <audio controls src="${url}"></audio>
                         <div class="action-row">
                             <a href="${url}" download="${fileName.replace(/\.[^/.]+$/, "")}.mp3" class="mini-btn dl-btn">⬇ Simpan</a>
-                            <button onclick="shareFile()" class="mini-btn sh-btn" id="shareBtn" aria-label="Share File">🔗 Share</button>
+                            <button onclick="shareFile('${url}', '${fileName}')" class="mini-btn sh-btn" id="shareBtn">🔗 Share</button>
                         </div>
                     </div>`;
                 
                 if (!navigator.canShare) document.getElementById('shareBtn').style.display = 'none';
                 statusText.innerText = "";
-                
-                // Opsional: Jangan matikan ffmpeg agar konversi kedua lebih cepat
-                // try { ffmpeg.exit(); ffmpeg = null; } catch(e) { console.log(e); } 
 
             } catch (e) {
-                console.error(e); 
-                statusText.innerText = "Terjadi kesalahan: " + e.message;
-                // if(e.message && !e.message.includes("exit(0)")) { alert("Gagal memproses."); }
-                // ffmpeg = null;
+                console.error(e); statusText.innerText = "Terjadi kesalahan: " + e.message;
             }
-            loader.style.display = "none";
-            convertBtn.disabled = false; convertBtn.style.opacity = "1";
+            loader.style.display = "none"; convertBtn.disabled = false; convertBtn.style.opacity = "1";
         };
 
-        // --- HISTORY LOGIC (DENGAN TOMBOL HAPUS SATU-SATU) ---
+        // 5. HISTORY & UTILS
         function addToHistory(name, size, url) {
             const container = document.getElementById('historySection');
             const list = document.getElementById('historyList');
@@ -633,45 +757,68 @@
             const mp3Name = name.replace(/\.[^/.]+$/, "") + ".mp3";
             const item = document.createElement('div');
             item.className = 'history-item hover-anim'; 
-            
             item.innerHTML = `
                 <div class="h-info"><div class="h-name">${mp3Name}</div><div class="h-meta">MP3 Size: ${size}</div></div>
                 <div class="h-actions">
                     <a href="${url}" download="${mp3Name}" class="h-btn h-dl" title="Download">⬇</a>
-                    <button onclick="shareHistoryUrl('${url}', '${mp3Name}')" class="h-btn h-sh" title="Share">🔗</button>
                     <button onclick="deleteHistoryItem(this)" class="h-btn h-del" title="Hapus Item">✕</button>
                 </div>`;
             list.prepend(item);
         }
-
-        async function shareHistoryUrl(blobUrl, fileName) {
+        
+        async function shareFile(url, name) {
             try {
-                const response = await fetch(blobUrl);
-                const blob = await response.blob();
-                const file = new File([blob], fileName, { type: "audio/mp3" });
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({ files: [file], title: fileName });
-                } else { alert("Browser tidak mendukung share fitur ini."); }
+                const blob = await (await fetch(url)).blob();
+                const file = new File([blob], name + ".mp3", { type: "audio/mp3" });
+                if (navigator.canShare({ files: [file] })) { navigator.share({ files: [file], title: name }); }
             } catch (e) { alert("File kadaluwarsa."); }
         }
 
-        // Fungsi Hapus Satu Item
         function deleteHistoryItem(btn) {
-            const item = btn.closest('.history-item');
-            item.remove();
-            
-            // Cek jika habis, sembunyikan container
-            const list = document.getElementById('historyList');
-            if (list.children.length === 0) {
-                document.getElementById('historySection').classList.remove('active');
+            const item = btn.closest('.history-item'); item.remove();
+            if (document.getElementById('historyList').children.length === 0) document.getElementById('historySection').classList.remove('active');
+        }
+        function clearAllHistory() { document.getElementById('historyList').innerHTML = ""; document.getElementById('historySection').classList.remove('active'); }
+
+        // 6. MAGIC DUST
+        const canvas = document.getElementById('cursor-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+
+        const mouse = { x: undefined, y: undefined };
+
+        // Handle Mouse & Touch
+        ['mousemove', 'touchmove', 'touchstart'].forEach(evt => {
+            window.addEventListener(evt, (e) => {
+                if(e.type.includes('touch')) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; }
+                else { mouse.x = e.clientX; mouse.y = e.clientY; }
+                for(let i=0; i<2; i++) particlesArray.push(new Particle());
+            });
+        });
+
+        class Particle {
+            constructor() {
+                this.x = mouse.x; this.y = mouse.y;
+                this.size = Math.random() * 4 + 1;
+                this.speedX = Math.random() * 3 - 1.5; this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsla(210, 100%, ${Math.random() * 50 + 50}%, 1)`; 
             }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.size > 0.2) this.size -= 0.1; }
+            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
 
-        // Fungsi Hapus Semua
-        function clearAllHistory() { 
-            document.getElementById('historyList').innerHTML = ""; 
-            document.getElementById('historySection').classList.remove('active'); 
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update(); particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.3) { particlesArray.splice(i, 1); i--; }
+            }
+            requestAnimationFrame(animate);
         }
+        animate();
     </script>
 </body>
 </html>
