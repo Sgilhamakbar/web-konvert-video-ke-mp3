@@ -21,7 +21,9 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://unpkg.com"> 
+    
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js" defer></script>
     
     <style>
         /* --- CONFIG VARIABLES --- */
@@ -517,14 +519,22 @@
         
         // SCRIPT PENGUNJUNG PALSU TELAH DIHAPUS DEMI KEAMANAN AKUN ADSENSE
         
-        // --- CONVERTER LOGIC ---
-        const { createFFmpeg, fetchFile } = FFmpeg;
+        // --- CONVERTER LOGIC YANG SUDAH DIPERBAIKI (SUPPORT DEFER) ---
+        
+        // HAPUS baris: const { createFFmpeg, fetchFile } = FFmpeg; 
+        // Kita akan panggil FFmpeg secara langsung di dalam fungsi
+        
         let ffmpeg = null;
         let finalMp3Blob = null; 
 
         const initFFmpeg = () => {
             if (ffmpeg === null) {
-                ffmpeg = createFFmpeg({ log: true, corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js', mainName: 'main' });
+                // Panggil FFmpeg.createFFmpeg di sini, saat tombol sudah ditekan
+                ffmpeg = FFmpeg.createFFmpeg({ 
+                    log: true, 
+                    corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js', 
+                    mainName: 'main' 
+                });
             }
         }
 
@@ -534,6 +544,7 @@
         const loader = document.getElementById('loader');
         
         function handleFileSelect() {
+            // ... (Kode handleFileSelect TETAP SAMA, tidak perlu diubah) ...
             const file = document.getElementById('uploader').files[0];
             const display = document.getElementById('selectedFileDisplay');
             if (file) {
@@ -564,13 +575,20 @@
             convertBtn.disabled = true; convertBtn.style.opacity = "0.5"; loader.style.display = "block";
 
             try {
+                // Pastikan FFmpeg sudah ada sebelum init
+                if (typeof FFmpeg === 'undefined') {
+                    throw new Error("Library FFmpeg belum siap. Coba tunggu sebentar atau refresh.");
+                }
+
                 initFFmpeg();
                 if (!ffmpeg.isLoaded()) await ffmpeg.load();
 
                 statusText.innerText = "Memproses video... (Jangan tutup tab)";
                 const fileName = files[0].name;
 
-                ffmpeg.FS('writeFile', 'input', await fetchFile(files[0]));
+                // PERUBAHAN DISINI: Gunakan FFmpeg.fetchFile (bukan fetchFile biasa)
+                ffmpeg.FS('writeFile', 'input', await FFmpeg.fetchFile(files[0]));
+                
                 await ffmpeg.run('-i', 'input', 'output.mp3');
                 
                 const data = ffmpeg.FS('readFile', 'output.mp3');
@@ -593,25 +611,19 @@
                 
                 if (!navigator.canShare) document.getElementById('shareBtn').style.display = 'none';
                 statusText.innerText = "";
-                try { ffmpeg.exit(); ffmpeg = null; } catch(e) { console.log(e); }
+                
+                // Opsional: Jangan matikan ffmpeg agar konversi kedua lebih cepat
+                // try { ffmpeg.exit(); ffmpeg = null; } catch(e) { console.log(e); } 
 
             } catch (e) {
                 console.error(e); 
-                statusText.innerText = "Terjadi kesalahan. Coba refresh halaman.";
-                if(e.message && !e.message.includes("exit(0)")) { alert("Gagal memproses."); }
-                ffmpeg = null;
+                statusText.innerText = "Terjadi kesalahan: " + e.message;
+                // if(e.message && !e.message.includes("exit(0)")) { alert("Gagal memproses."); }
+                // ffmpeg = null;
             }
             loader.style.display = "none";
             convertBtn.disabled = false; convertBtn.style.opacity = "1";
         };
-
-        async function shareFile() {
-            if (!finalMp3Blob) return;
-            const file = new File([finalMp3Blob], "audio.mp3", { type: "audio/mp3" });
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                try { await navigator.share({ files: [file], title: 'Audio MP3', text: 'Convert by Converter Pro' }); } catch (err) {}
-            }
-        }
 
         // --- HISTORY LOGIC (DENGAN TOMBOL HAPUS SATU-SATU) ---
         function addToHistory(name, size, url) {
